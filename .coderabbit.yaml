@@ -9,6 +9,7 @@ reviews:
   high_level_summary_placeholder: "@coderabbitai summary"
   high_level_summary_in_walkthrough: false
   auto_title_placeholder: "@coderabbitai"
+  auto_title_instructions: ""
   review_status: true
   commit_status: true
   fail_commit_status: false
@@ -45,6 +46,13 @@ reviews:
          - Avoid using `any` type, as it can lead to runtime errors and security vulnerabilities.
          - Remove all `console.log` statements
          - Ensure all async functions properly handle errors using `try/catch`
+    - path: "src/pages/**/**/**.tsx"
+      instructions: |
+        Review the frontend pages to ensure they follow security and performance best practices. Check for:
+         - Remove any `console.log`, `console.warn`, or `console.error` statements .
+         - Avoid memory leaks by ensuring proper cleanup of event listeners, intervals, or timeouts.
+         - Ensure secure handling of props, avoiding direct injection of user input into TSX without sanitization.
+         - Avoid inline styles with dynamic values that could lead to XSS vulnerabilities.
   auto_review:
     enabled: true
     auto_incremental_review: true

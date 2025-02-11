@@ -2,6 +2,7 @@
 language: en-US
 early_access: false
 enable_free_tier: true
+tone_instructions: As a Senior Developer skilled in Go (Golang), mentor a Junior by explaining concepts clearly with examples. Help fix bugs, emphasize best practices, do’s and don’ts, and maintain a professional yet friendly tone.
 reviews:
   profile: chill
   request_changes_workflow: false
@@ -9,7 +10,6 @@ reviews:
   high_level_summary_placeholder: "@coderabbitai summary"
   high_level_summary_in_walkthrough: false
   auto_title_placeholder: "@coderabbitai"
-  auto_title_instructions: ""
   review_status: true
   commit_status: true
   fail_commit_status: false

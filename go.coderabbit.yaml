@@ -1,0 +1,126 @@
+# yaml-language-server: $schema=https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
+language: en-US
+early_access: false
+enable_free_tier: true
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: false
+  high_level_summary_placeholder: "@coderabbitai summary"
+  high_level_summary_in_walkthrough: false
+  auto_title_placeholder: "@coderabbitai"
+  auto_title_instructions: ""
+  review_status: true
+  commit_status: true
+  fail_commit_status: false
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: true
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: true
+  auto_apply_labels: false
+  suggested_reviewers: true
+  poem: true
+  abort_on_close: true
+  path_instructions:
+    - path: "**/*.go"
+      instructions: |
+        Perform a global security and performance review of all Go files:
+        - Use html/template instead of text/template to auto-escape HTML.
+        - Parameterize SQL queries to prevent SQL injection.
+        - Validate all incoming user input to prevent injection attacks.
+        - Use context for timeouts and cancellation in database calls.
+        - Avoid using unsafe pointers unless absolutely necessary.
+        - Use defer for proper resource cleanup (e.g., closing files, database connections).
+        - Use golang.org/x/time/rate for rate limiting.
+    - path: "cmd/**/*.go"
+      instructions: |
+        Review command-line applications for best practices:
+        - Use structured logging with zap or zerolog.
+        - Mask sensitive information in logs (e.g., passwords, tokens).
+        - Wrap errors with fmt.Errorf("%w", err) for better error context.
+        - Use recover to handle panics gracefully.
+        - Validate environment variables at startup.
+    - path: "internal/**/*.go"
+      instructions: |
+        Review internal packages for security and performance:
+        - Use interfaces for dependency injection to improve testability.
+        - Avoid global variables to prevent race conditions.
+        - Use sync.Pool for efficient reuse of objects.
+        - Ensure proper handling of goroutines to avoid leaks.
+    - path: "go.mod"
+      instructions: |
+        Verify dependencies and module configuration:
+        - Use go mod tidy to clean up unused dependencies.
+        - Avoid using replace directives unless necessary.
+        - Pin dependencies to specific versions for reproducibility.
+        - Run go vet and golangci-lint for static analysis.
+    - path: ".env*"
+      instructions: |
+        Ensure environment variables are securely managed:
+        - Avoid committing .env files to version control.
+        - Use a secrets manager (e.g., Vault, AWS Secrets Manager) for sensitive values.
+        - Validate environment variables at application startup.
+    - path: "Dockerfile"
+      instructions: |
+        Review Dockerfile for security and best practices:
+        - Use multi-stage builds to reduce image size.
+        - Avoid running as root in the container.
+        - Use COPY --chown to set proper file permissions.
+        - Scan images for vulnerabilities using Trivy or Clair.
+    - path: "cmd/payram/main.go"
+      instructions: |
+        Review the main application entry point:
+        - Ensure proper error handling and logging.
+        - Use context for graceful shutdowns.
+        - Validate configuration at startup.
+        - Avoid hardcoding sensitive values (e.g., API keys, database credentials).
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    base_branches:
+      - ".*" # this is set to all branches, so whoever raises a PR it will generates a review for them
+  tools:
+    github-checks:
+      enabled: true
+      timeout_ms: 90000
+    golangci-lint:
+      enabled: true
+    gitleaks:
+      enabled: true
+    semgrep:
+      enabled: true
+    checkov:
+      enabled: true
+    ast-grep:
+      essential_rules: true
+    actionlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    markdownlint:
+      enabled: true
+    shellcheck:
+      enabled: true
+    hadolint:
+      enabled: true
+
+  finishing_touches:
+    docstrings:
+      enabled: true
+chat:
+  auto_reply: true
+
+knowledge_base:
+  opt_out: false
+  web_search:
+    enabled: true
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
+  pull_requests:
+    scope: auto

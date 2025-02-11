@@ -53,6 +53,34 @@ reviews:
          - Avoid memory leaks by ensuring proper cleanup of event listeners, intervals, or timeouts.
          - Ensure secure handling of props, avoiding direct injection of user input into TSX without sanitization.
          - Avoid inline styles with dynamic values that could lead to XSS vulnerabilities.
+    - path: "src/**/*.ts"
+      instructions: |
+        Perform a global security review of all TypeScript files:
+        - Avoid using `any` type to prevent runtime errors and security vulnerabilities.
+        - Remove all `console.log` statements.
+        - Ensure all async functions handle errors using `try/catch`.
+        - Use strict type checking (`strict: true` in `tsconfig.json`).
+        - Validate environment variables at startup using a library like `envalid`.
+    - path: ".env*"
+      instructions: |
+        Ensure environment variables are securely managed:
+        - Avoid committing `.env` files to version control.
+        - Use a secrets manager (e.g., AWS Secrets Manager, Doppler) for sensitive values.
+        - Validate environment variables at application startup.
+    - path: "next.config.js"
+      instructions: |
+        Review Next.js configuration for security and performance:
+        - Enable Content Security Policy (CSP) headers.
+        - Use `next/image` with optimized domains.
+        - Enable Incremental Static Regeneration (ISR) for dynamic pages.
+        - Add `@next/bundle-analyzer` for bundle size monitoring.
+    - path: "package.json"
+      instructions: |
+        Verify dependencies and scripts:
+        - Run `npm audit --production` to check for vulnerable dependencies.
+        - Ensure `engines` field specifies compatible Node.js versions.
+        - Avoid unsafe `postinstall` scripts.
+        - Use `--ignore-scripts` flag in CI/CD pipelines to prevent malicious scripts.
   auto_review:
     enabled: true
     auto_incremental_review: true
@@ -69,22 +97,7 @@ reviews:
       level: default
     ast-grep:
       essential_rules: true
-    golangci-lint:
-      enabled: true
-    phpstan:
-      enabled: true
-      level: default
-    swiftlint:
-      enabled: true
-    detekt:
-      enabled: true
-    pmd:
-      enabled: true
     semgrep:
-      enabled: true
-    shellcheck:
-      enabled: true
-    ruff:
       enabled: true
     markdownlint:
       enabled: true
@@ -96,29 +109,19 @@ reviews:
       enabled: true
     gitleaks:
       enabled: true
-
     checkov:
       enabled: true
     eslint:
       enabled: true
     rubocop:
       enabled: true
-    buf:
-      enabled: true
-    regal:
-      enabled: true
     actionlint:
-      enabled: true
-    cppcheck:
-      enabled: true
-    circleci:
       enabled: true
   finishing_touches:
     docstrings:
       enabled: true
 chat:
   auto_reply: true
-
 knowledge_base:
   opt_out: false
   web_search:
